@@ -1,5 +1,6 @@
 # lib/readyset.rb
 
+require "readyset/railtie" if defined?(Rails)
 require "readyset/configuration"
 require "readyset/connection"
 
