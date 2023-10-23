@@ -3,6 +3,7 @@
 require "readyset/railtie" if defined?(Rails)
 require "readyset/configuration"
 require "readyset/connection"
+require "readyset/command"
 
 module Readyset
   class << self
