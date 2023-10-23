@@ -1,31 +1,88 @@
-# Readyset::Rails
+# `readyset-rails` Gem
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/readyset/rails`. To experiment with that code, run `bin/console` for an interactive prompt.
+The `readyset-rails` gem provides a seamless integration with [ReadySet](readyset.io), allowing you to easily cache queries and interact with the ReadySet database directly from your Ruby on Rails application.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'readyset-rails'
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+And then execute:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+```bash
+$ bundle install
+```
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+Or install it yourself as:
+
+```bash
+$ gem install readyset-rails
+```
+
+## Configuration
+
+By default, `readyset-rails` will attempt to establish a connection using the `READYSET_URL` environment variable. If this isn't set, it will fall back to using the default connection URL from your `database.yml`.
+
+To configure the gem, you can use an initializer:
+
+```ruby
+
+# config/initializers/readyset_rails.rb
+
+Readyset.configure do |config|
+config.connection_url = "your_custom_db_url_here" # Optional
+end
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Creating a Cache
 
-## Development
+To create a cache, you can use the `create_cache` method:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+Readyset::Command.create_cache("cache_name", "SELECT \* FROM users WHERE age > 30", always: true)
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+The `always` parameter is optional and defaults to `false`.
+
+### Listing Caches
+
+To list all caches:
+
+```ruby
+caches = Readyset::Command.show_caches
+```
+
+To list specific caches by query ID:
+
+```ruby
+caches = Readyset::Command.show_caches(1) # Where 1 is the query ID
+```
+
+### Dropping a Cache
+
+To drop a cache:
+
+```ruby
+Readyset::Command.drop_cache(cache_id)
+```
+
+## Testing
+
+After setting up, run:
+
+```bash
+$ rspec
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/helpotters/readyset-rails.
+Bug reports and pull requests are welcome on GitHub at github.com/helpotters/readyset-rails
+
+## License
+
+TO BE DECIDED.
